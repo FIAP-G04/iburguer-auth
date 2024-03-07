@@ -1,43 +1,28 @@
-data "aws_vpc" "new-vpc" {
+data "aws_vpc" "vpc" {
   filter {
     name   = "tag:Name"
     values = ["${var.prefix}-vpc"]
   }
 }
 
-data "aws_availability_zones" "available" {}
-
-resource "aws_subnet" "new-subnets" {
-    count = 2
-    availability_zone = data.aws_availability_zones.available.names[count.index]
-    vpc_id = aws_vpc.new-vpc.id
-    cidr_block = "10.0.${count.index+4}.0/24"
-    map_public_ip_on_launch = true
-    tags = {
-        Name = "${var.prefix}-subnet-${count.index+4}"
-    }
+data "aws_subnets" "available-subnets" {
+  filter {
+    name = "tag:Name"
+    values = [ "${var.prefix}-subnet-0", "${var.prefix}-subnet-1"]
+  }
 }
 
-resource "aws_internet_gateway" "new-igw" {
-    vpc_id = aws_vpc.new-vpc.id
-    tags = {
-        Name = "${var.prefix}-igw"
-    }
+data "aws_subnets" "private-subnets" {
+  filter {
+    name = "tag:Name"
+    values = [ "${var.prefix}-private-subnet-0", "${var.prefix}-private-subnet-1"]
+  }
 }
 
-resource "aws_route_table" "new-rtb" {
-    vpc_id = aws_vpc.new-vpc.id
-    route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = aws_internet_gateway.new-igw.id
-    }
-    tags = {
-        Name = "${var.prefix}-rtb"
-    }
-}
+data "aws_security_groups" "vpc-sg" {
 
-resource "aws_route_table_association" "new-rtb-association" {
-    count = 2
-    route_table_id = aws_route_table.new-rtb.id
-    subnet_id = aws_subnet.new-subnets.*.id[count.index]
+  filter {
+    name   = "tag:Name"//"vpc-id"
+    values = ["${var.prefix}-sg"]//[data.aws_vpc.vpc.id]
+  }
 }

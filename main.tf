@@ -1,42 +1,26 @@
-/*module "new-vpc" {
+module "vpc" {
   source = "./modules/vpc"
   prefix = var.prefix
   vpc_cidr_block = var.vpc_cidr_block
-}*/
-
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
 }
 
-resource "aws_iam_role" "iam_for_lambda" {
-  name               = "iam_for_lambda"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+module "lambda" {
+  source = "./modules/lambda"
+  subnet_ids = module.vpc.subnet_ids
+  security_group_ids = module.vpc.security_group_id
 }
 
-data "archive_file" "lambda" {
-  type        = "zip"
-  source_file = "./example/main.js"
-  output_path = "lambda_function_payload.zip"
+module "gateway" {
+  source = "./modules/gateway"
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = module.vpc.subnet_ids
+  private_subnet_ids = module.vpc.private_subnet_ids
+  lambda_function_name = module.lambda.function_name
+  lambda_invoke_arn = module.lambda.invoke_arn
+  prefix = var.prefix
+  load_balancer_arn = var.load_balancer_arn
 }
 
-resource "aws_lambda_function" "test_lambda" {
-  # If the file is not in the current working directory you will need to include a
-  # path.module in the filename.
-  filename      = "lambda_function_payload.zip"
-  function_name = "ServerlessExample"
-  handler       = "main.handler"
-  role          = "${aws_iam_role.iam_for_lambda.arn}"
-
-  source_code_hash = data.archive_file.lambda.output_base64sha256
-
-  runtime = "nodejs18.x"
+output "base_url" {
+  value = "${module.gateway.base_url}"
 }
