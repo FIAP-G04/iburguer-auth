@@ -18,11 +18,3 @@ data "aws_subnets" "private-subnets" {
     values = [ "${var.prefix}-private-subnet-0", "${var.prefix}-private-subnet-1"]
   }
 }
-
-data "aws_security_groups" "vpc-sg" {
-
-  filter {
-    name   = "tag:Name"//"vpc-id"
-    values = ["${var.prefix}-sg"]//[data.aws_vpc.vpc.id]
-  }
-}

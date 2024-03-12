@@ -15,6 +15,9 @@ resource "aws_apigatewayv2_integration" "vpc-link-integration" {
 resource "aws_apigatewayv2_route" "iburguer-route" {
   api_id = aws_apigatewayv2_api.api-gtw.id
 
+  authorizer_id = aws_apigatewayv2_authorizer.authorizer.id
+  authorization_type = "CUSTOM"
+  
   route_key = "ANY /iburguer/{proxy+}"
   target = "integrations/${aws_apigatewayv2_integration.vpc-link-integration.id}"
 }
