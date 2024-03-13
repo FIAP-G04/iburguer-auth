@@ -1,42 +1,77 @@
-/*module "new-vpc" {
+module "vpc" {
   source = "./modules/vpc"
   prefix = var.prefix
-  vpc_cidr_block = var.vpc_cidr_block
-}*/
-
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
 }
 
-resource "aws_iam_role" "iam_for_lambda" {
-  name               = "iam_for_lambda"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+module "lambda-signin" {
+  source = "./modules/lambda"
+  subnet_ids = concat(module.vpc.subnet_ids, module.vpc.private_subnet_ids)
+  vpc_id = module.vpc.vpc_id
+  prefix = var.prefix
+  path_to_lambda = var.path_to_lambda_si
+  output_path = var.output_path_si
+  function_name = var.function_name_si
+  runtime = var.runtime
+  handler = var.handler_si
+  cognito_client_id = module.cognito.pool_client_id
+  cognito_user_pool_id = module.cognito.pool_id
 }
 
-data "archive_file" "lambda" {
-  type        = "zip"
-  source_file = "./example/main.js"
-  output_path = "lambda_function_payload.zip"
+module "lambda-signup" {
+  source = "./modules/lambda"
+  subnet_ids = concat(module.vpc.subnet_ids, module.vpc.private_subnet_ids)
+  vpc_id = module.vpc.vpc_id
+  prefix = var.prefix
+  function_name = var.function_name_su
+  runtime = var.runtime
+  handler = var.handler_su
+  output_path = var.output_path_su
+  path_to_lambda = var.path_to_lambda_su
+  cognito_client_id = module.cognito.pool_client_id
+  cognito_user_pool_id = module.cognito.pool_id
 }
 
-resource "aws_lambda_function" "test_lambda" {
-  # If the file is not in the current working directory you will need to include a
-  # path.module in the filename.
-  filename      = "lambda_function_payload.zip"
-  function_name = "ServerlessExample"
-  handler       = "main.handler"
-  role          = "${aws_iam_role.iam_for_lambda.arn}"
+/*
+data "aws_lambda_function" "lambda-signin" {
+  function_name = var.function_name_si
+}
 
-  source_code_hash = data.archive_file.lambda.output_base64sha256
+data "aws_lambda_function" "lambda-signup" {
+  function_name = var.function_name_su
+}
+*/
+module "gateway" {
+  source = "./modules/gateway"
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = module.vpc.subnet_ids
+  private_subnet_ids = module.vpc.private_subnet_ids
+  prefix = var.prefix
+  load_balancer_arn = var.load_balancer_arn
 
-  runtime = "nodejs18.x"
+  cognito_endpoint = module.cognito.cognito_endpoint
+  cognito_pool_client_id = module.cognito.pool_client_id
+  
+  lambda_signin_function_name = module.lambda-signin.function_name//data.aws_lambda_function.lambda-signin.function_name //
+  lambda_signin_invoke_arn = module.lambda-signin.invoke_arn//data.aws_lambda_function.lambda-signin.invoke_arn //
+
+  lambda_signup_function_name = module.lambda-signup.function_name//data.aws_lambda_function.lambda-signup.function_name //
+  lambda_signup_invoke_arn = module.lambda-signup.invoke_arn//data.aws_lambda_function.lambda-signup.invoke_arn //module.lambda-signup.invoke_arn//
+}
+
+module "cognito" {
+  source = "./modules/cognito"
+  prefix = var.prefix
+  cognito_domain = var.cognito_domain
+}
+
+output "cognito_user_pool_id" {
+  value = module.cognito.pool_id
+}
+
+output "cognito_user_pool_client_id" {
+  value = module.cognito.pool_client_id
+}
+
+output "base_url" {
+  value = "${module.gateway.base_url}"
 }
