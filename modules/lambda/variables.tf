@@ -6,3 +6,5 @@ variable "output_path" {}
 variable "function_name" {}
 variable "runtime" {}
 variable "handler" {}
+variable "cognito_client_id" {}
+variable "cognito_user_pool_id" {}

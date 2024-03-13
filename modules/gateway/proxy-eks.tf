@@ -5,7 +5,7 @@ resource "aws_apigatewayv2_integration" "vpc-link-integration" {
     "overwrite:path"           = "/$request.path.proxy"
   }
 
-  integration_uri = var.load_balancer_arn
+  integration_uri =  var.load_balancer_arn
   integration_type = "HTTP_PROXY"
   integration_method = "ANY"
   connection_type = "VPC_LINK"
@@ -15,8 +15,8 @@ resource "aws_apigatewayv2_integration" "vpc-link-integration" {
 resource "aws_apigatewayv2_route" "iburguer-route" {
   api_id = aws_apigatewayv2_api.api-gtw.id
 
-  authorizer_id = aws_apigatewayv2_authorizer.authorizer.id
-  authorization_type = "CUSTOM"
+  authorizer_id = aws_apigatewayv2_authorizer.cognito-authorizer.id
+  authorization_type = "JWT"
   
   route_key = "ANY /iburguer/{proxy+}"
   target = "integrations/${aws_apigatewayv2_integration.vpc-link-integration.id}"

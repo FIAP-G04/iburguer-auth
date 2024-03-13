@@ -1,5 +1,6 @@
 resource "aws_cognito_user_pool" "cognito" {
   name = "${var.prefix}-customers-user-pool"
+
   password_policy {
     minimum_length = 8
   }
@@ -50,6 +51,11 @@ resource "aws_cognito_user_pool_client" "cognito" {
   name = "${var.prefix}-auth-lambdas"
 
   generate_secret = false
+  explicit_auth_flows = [ 
+    "ALLOW_REFRESH_TOKEN_AUTH", 
+    "ALLOW_USER_PASSWORD_AUTH", 
+    "ALLOW_USER_SRP_AUTH" 
+    ]
   user_pool_id    = aws_cognito_user_pool.cognito.id
 }
 

@@ -7,12 +7,15 @@ variable "load_balancer_arn" {}
 #Cognito
 variable "cognito_domain" {}
 
-#Lambda
-variable "path_to_lambda" {}
-variable "output_path" {}
-variable "function_name" {}
+#Lambda SignIn
+variable "path_to_lambda_si" {}
+variable "output_path_si" {}
+variable "function_name_si" {}
 variable "runtime" {}
-variable "handler" {}
+variable "handler_si" {}
 
-variable "output_path_auth" {}
-variable "path_to_lambda_auth" {}
+#Lambda Signup
+variable "output_path_su" {}
+variable "path_to_lambda_su" {}
+variable "function_name_su" {}
+variable "handler_su" {}

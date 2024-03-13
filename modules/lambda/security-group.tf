@@ -19,6 +19,6 @@ resource "aws_security_group" "lambda" {
   }
 
   tags = {
-    Name = "${var.prefix}-sg"
+    Name = "${var.prefix}-${var.function_name}-sg"
   }
 }

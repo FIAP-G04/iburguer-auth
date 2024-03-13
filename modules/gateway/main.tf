@@ -12,7 +12,8 @@ resource "aws_apigatewayv2_stage" "api-gtw" {
 
 resource "aws_apigatewayv2_deployment" "api-gtw" {
   depends_on = [ 
-    aws_apigatewayv2_integration.lambda,
+    aws_apigatewayv2_integration.lambda-signin,
+    aws_apigatewayv2_integration.lambda-signup,
     aws_apigatewayv2_integration.vpc-link-integration
   ]
 
