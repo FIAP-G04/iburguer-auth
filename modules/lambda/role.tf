@@ -20,3 +20,8 @@ resource "aws_iam_role_policy_attachment" "iam_role_policy_attachment_lambda_vpc
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
+
+resource "aws_iam_role_policy_attachment" "iam_role_policy_attachment_cognito_power_user" {
+  role       = aws_iam_role.iam_for_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonCognitoPowerUser"
+}
