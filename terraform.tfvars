@@ -1,6 +1,6 @@
 prefix = "iburguer"
 vpc_cidr_block = "10.0.0.0/16"
-load_balancer_arn = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-150a43b911/c443e55d133d18a2/5a9d4046f1dfd29d"
+load_balancer_arn = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-9dc5f4f13e/f38b81910767390d/a0de92ec48854c55"
 cognito_domain = "iburguer-auth-lambdas"
 
 runtime = "dotnet8"
