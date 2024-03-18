@@ -1,6 +1,6 @@
 resource "aws_apigatewayv2_route" "proxy-signin" {
   api_id = "${aws_apigatewayv2_api.api-gtw.id}"
-  route_key = "POST /signin"
+  route_key = "POST /customers/signin"
   target = "integrations/${aws_apigatewayv2_integration.lambda-signin.id}"
 }
 resource "aws_apigatewayv2_integration" "lambda-signin" {
