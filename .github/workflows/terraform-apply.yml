@@ -34,4 +34,4 @@ jobs:
 
       - name: Terraform Apply
         id: apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var='load_balancer_arn=${{ secrets.LOAD_BALANCER_ARN }}'
