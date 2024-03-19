@@ -31,15 +31,6 @@ module "lambda-signup" {
   cognito_user_pool_id = module.cognito.pool_id
 }
 
-/*
-data "aws_lambda_function" "lambda-signin" {
-  function_name = var.function_name_si
-}
-
-data "aws_lambda_function" "lambda-signup" {
-  function_name = var.function_name_su
-}
-*/
 module "gateway" {
   source = "./modules/gateway"
   vpc_id = module.vpc.vpc_id
@@ -51,11 +42,11 @@ module "gateway" {
   cognito_endpoint = module.cognito.cognito_endpoint
   cognito_pool_client_id = module.cognito.pool_client_id
   
-  lambda_signin_function_name = module.lambda-signin.function_name//data.aws_lambda_function.lambda-signin.function_name //
-  lambda_signin_invoke_arn = module.lambda-signin.invoke_arn//data.aws_lambda_function.lambda-signin.invoke_arn //
+  lambda_signin_function_name = module.lambda-signin.function_name
+  lambda_signin_invoke_arn = module.lambda-signin.invoke_arn
 
-  lambda_signup_function_name = module.lambda-signup.function_name//data.aws_lambda_function.lambda-signup.function_name //
-  lambda_signup_invoke_arn = module.lambda-signup.invoke_arn//data.aws_lambda_function.lambda-signup.invoke_arn //module.lambda-signup.invoke_arn//
+  lambda_signup_function_name = module.lambda-signup.function_name
+  lambda_signup_invoke_arn = module.lambda-signup.invoke_arn
 }
 
 module "cognito" {
