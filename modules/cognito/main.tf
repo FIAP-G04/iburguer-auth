@@ -1,5 +1,5 @@
 resource "aws_cognito_user_pool" "cognito" {
-  name = "${var.prefix}-customers-user-pool"
+  name = "${var.prefix}-user-pool"
 
   password_policy {
     minimum_length = 8
@@ -48,7 +48,7 @@ resource "aws_cognito_user_pool" "cognito" {
 }
 
 resource "aws_cognito_user_pool_client" "cognito" {
-  name = "${var.prefix}-auth-lambdas"
+  name = "${var.prefix}-user-pool-client"
 
   generate_secret = false
   explicit_auth_flows = [ 

@@ -2,10 +2,14 @@ variable "prefix" {}
 
 #Gateway
 variable "vpc_cidr_block" {}
-variable "load_balancer_arn" {}
+variable "load_balancer_arn_menu" {}
+variable "load_balancer_arn_checkout" {}
+variable "load_balancer_arn_shopping_cart" {}
+variable "load_balancer_arn_order" {}
 
 #Cognito
-variable "cognito_domain" {}
+variable "cognito_totem_domain" {}
+variable "cognito_admin_domain" {}
 
 #Lambda SignIn
 variable "path_to_lambda_si" {}
