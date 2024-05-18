@@ -1,9 +1,9 @@
 prefix = "iburguer"
 vpc_cidr_block = "10.0.0.0/16"
-load_balancer_arn_menu = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-b89cc2f88a/09e01980480e7b56/3acf4bfcad1d39db"
-load_balancer_arn_checkout = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-b89cc2f88a/09e01980480e7b56/3acf4bfcad1d39db"
-load_balancer_arn_shopping_cart = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-998bd3e6d1/a395bd4887fae335/8d796f98c59cad0a"
-load_balancer_arn_order = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-b89cc2f88a/09e01980480e7b56/3acf4bfcad1d39db"
+load_balancer_arn_menu = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-8983812f58/fae40e2cbfdfb087/d589aaf212afb681"
+load_balancer_arn_checkout = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-77a26eac4b/b853bc26afabde5d/d8f84d3a43f8796f"
+load_balancer_arn_shopping_cart = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-c905cd4107/7134eb871f564c41/a18d1d1e140f7eb0"
+load_balancer_arn_order = "arn:aws:elasticloadbalancing:us-east-1:905418067917:listener/net/k8s-iburguer-iburguer-04b713380c/3adf7e00bd31086b/5d2c17b3d35fe797"
 
 cognito_totem_domain = "iburguer-auth-totem"
 cognito_admin_domain = "iburguer-auth-admin"
