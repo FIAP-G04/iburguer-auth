@@ -73,11 +73,15 @@ module "gateway-totem" {
     method = "DELETE"
     load_balancer_arn = var.load_balancer_arn_shopping_cart
   }, {
-    route = "/api/carts/{shoppingCartId}/items/{cartItemId}/decremented"
+    route = "/api/carts/{shoppingCartId}/item/{cartItemId}/decremented"
     method = "PATCH"
     load_balancer_arn = var.load_balancer_arn_shopping_cart
   }, {
     route = "/api/carts/{shoppingCartId}/items/{cartItemId}/incremented"
+    method = "PATCH"
+    load_balancer_arn = var.load_balancer_arn_shopping_cart
+  }, {
+    route = "/api/carts/{shoppingCartId}/checkout"
     method = "PATCH"
     load_balancer_arn = var.load_balancer_arn_shopping_cart
   } ]
@@ -180,16 +184,25 @@ module "gateway-admin" {
   cognito_endpoint = module.cognito-admin.cognito_endpoint
   cognito_pool_client_id = module.cognito-admin.pool_client_id
 }
-/*
+
 module "gateway-payments" {
   source = "./modules/gateway-base"
 
   gateway_name = "payments-gateway"
   gateway_stage = "iburguer-payments"
   gateway_routes = [ 
-  // Menu  
+  // Payments  
   {
-    route = "GET /api/menu/items"
+    route = "/api/payments"
+    method = "POST"
+    load_balancer_arn = var.load_balancer_arn_checkout
+  }, {
+    route = "/api/payments/{id}/confirmed"
+    method = "PATCH"
+    load_balancer_arn = var.load_balancer_arn_checkout
+  }, {
+    route = "/api/payments/{id}/refused"
+    method = "PATCH"
     load_balancer_arn = var.load_balancer_arn_checkout
   } ]
 
@@ -200,7 +213,7 @@ module "gateway-payments" {
   private_subnet_ids = module.vpc.private_subnet_ids
   prefix = var.prefix
 }
-*/
+
 module "cognito-totem" {
   source = "./modules/cognito"
   prefix = "${var.prefix}-totem"
