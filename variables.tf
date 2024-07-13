@@ -23,3 +23,9 @@ variable "output_path_su" {}
 variable "path_to_lambda_su" {}
 variable "function_name_su" {}
 variable "handler_su" {}
+
+#Lambda Disable
+variable "output_path_disable" {}
+variable "path_to_lambda_disable" {}
+variable "function_name_disable" {}
+variable "handler_disable" {}

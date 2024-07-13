@@ -19,3 +19,8 @@ output_path_su = "lambda_signup_payload.zip"
 path_to_lambda_su = "./lambdas/IBurguer.Onboarding.SignUp/src/IBurguer.Onboarding.SignUp/bin/Release/lambda-publish"
 function_name_su = "iburguer-lambda-signup"
 handler_su = "iBurguer.Onboarding.SignUp::iBurguer.Onboarding.SignUp.Function::FunctionHandler"
+
+output_path_disable = "lambda_disable_payload.zip"
+path_to_lambda_disable = "./lambdas/IBurguer.Onboarding.Disable/src/IBurguer.Onboarding.Disable/bin/Release/lambda-publish"
+function_name_disable = "iburguer-lambda-disable"
+handler_disable = "iBurguer.Onboarding.Disable::iBurguer.Onboarding.Disable.Function::FunctionHandler"
