@@ -268,3 +268,6 @@ output "base_url_admin" {
   value = "${module.gateway-admin.base_url}"
 }
 
+output "base_url_payments" {
+  value = "${module.gateway-payments.base_url}"
+}
