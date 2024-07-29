@@ -31,6 +31,20 @@ module "lambda-signup" {
   cognito_user_pool_id = module.cognito-totem.pool_id
 }
 
+module "lambda-disable" {
+  source = "./modules/lambda"
+  subnet_ids = concat(module.vpc.subnet_ids, module.vpc.private_subnet_ids)
+  vpc_id = module.vpc.vpc_id
+  prefix = var.prefix
+  function_name = var.function_name_disable
+  runtime = var.runtime
+  handler = var.handler_disable
+  output_path = var.output_path_disable
+  path_to_lambda = var.path_to_lambda_disable
+  cognito_client_id = module.cognito-totem.pool_client_id
+  cognito_user_pool_id = module.cognito-totem.pool_id
+}
+
 module "gateway-totem" {
   source = "./modules/gateway-base"
 
@@ -94,7 +108,11 @@ module "gateway-totem" {
     route = "POST /signup"
     lambda_invoke_arn = module.lambda-signup.invoke_arn
     function_name = module.lambda-signup.function_name
-  } ]
+  }, {
+    route = "POST /disable"
+    lambda_invoke_arn = module.lambda-disable.invoke_arn
+    function_name = module.lambda-disable.function_name
+  }]
 
   vpc_id = module.vpc.vpc_id
   subnet_ids = module.vpc.subnet_ids
@@ -250,3 +268,6 @@ output "base_url_admin" {
   value = "${module.gateway-admin.base_url}"
 }
 
+output "base_url_payments" {
+  value = "${module.gateway-payments.base_url}"
+}
