@@ -212,6 +212,10 @@ module "gateway-payments" {
   // Payments  
   {
     route = "/api/payments"
+    method = "GET"
+    load_balancer_arn = var.load_balancer_arn_checkout
+  },{
+    route = "/api/payments"
     method = "POST"
     load_balancer_arn = var.load_balancer_arn_checkout
   }, {
